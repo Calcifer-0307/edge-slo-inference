@@ -1,0 +1,44 @@
+simulation:
+  time_s: 100
+  random_seed: 42
+  arrival_process: poisson # poisson or onoff
+  arrival_rate: 20 # requests per second (base load)
+  onoff_cycle_ms: 1000
+  onoff_on_fraction: 0.5
+  onoff_peak_rate_multiplier: 2.0
+  model_switch_overhead_ms: 0.0
+
+tenants:
+  - id: 0
+    weight: 0.5
+    slo_ms: 100
+    priority: 1 # higher priority
+  - id: 1
+    weight: 0.5
+    slo_ms: 300
+    priority: 2 # lower priority
+
+model_zoo:
+  - name: fast
+    accuracy_proxy: 0.6
+    service_time_mean_ms: 20
+    service_time_std_ms: 2
+  - name: mid
+    accuracy_proxy: 0.7
+    service_time_mean_ms: 50
+    service_time_std_ms: 5
+  - name: slow
+    accuracy_proxy: 0.8
+    service_time_mean_ms: 100
+    service_time_std_ms: 10
+
+policy:
+  scheduler: EDF # FIFO, EDF, Priority
+  strategy: slo_aware_utility # fixed_high_accuracy, threshold_downgrade, slo_aware_utility
+  fixed_model_name: slow
+  admission_control: false
+  threshold_wait_ms: 120.0
+  threshold_queue_len: 4
+  utility_latency_penalty: 0.12
+  utility_priority_bonus: 0.03
+  prediction_error_ratio: 0.0

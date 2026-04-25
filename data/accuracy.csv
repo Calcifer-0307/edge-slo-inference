@@ -1,0 +1,4 @@
+name,accuracy_proxy,source_note
+fast,0.60,Proxy aligned with MobileNetV2 profile
+mid,0.70,Proxy aligned with ResNet18 profile
+slow,0.80,Proxy aligned with ResNet50 profile
